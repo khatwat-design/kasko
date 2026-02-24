@@ -1,6 +1,7 @@
 "use client";
 
 import Script from "next/script";
+import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
@@ -8,18 +9,31 @@ declare global {
   }
 }
 
-type Props = { pixelId: string };
-
 /**
- * Loads Meta (Facebook) Pixel and fires PageView after the SDK is ready.
- * Using onLoad ensures events fire reliably instead of relying on the queue.
+ * Loads Meta Pixel using runtime config from /api/config.
+ * This way NEXT_PUBLIC_META_PIXEL_ID set on the server (e.g. Hostinger) works
+ * without needing to rebuild the app.
  */
-export default function MetaPixelLoader({ pixelId }: Props) {
+export default function MetaPixelLoader() {
+  const [pixelId, setPixelId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/config")
+      .then((res) => res.json())
+      .then((data: { metaPixelId?: string }) => {
+        const id = data.metaPixelId?.trim();
+        if (id) setPixelId(id);
+      })
+      .catch(() => {});
+  }, []);
+
   const handleLoad = () => {
-    if (typeof window === "undefined" || !window.fbq) return;
+    if (typeof window === "undefined" || !window.fbq || !pixelId) return;
     window.fbq("init", pixelId);
     window.fbq("track", "PageView");
   };
+
+  if (!pixelId) return null;
 
   return (
     <>

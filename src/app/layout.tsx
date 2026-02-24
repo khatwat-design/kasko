@@ -39,7 +39,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
-  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
   return (
     <html lang="ar-IQ" dir="rtl">
@@ -62,9 +61,7 @@ export default function RootLayout({
             </Script>
           </>
         ) : null}
-        {metaPixelId ? (
-          <MetaPixelLoader pixelId={metaPixelId} />
-        ) : null}
+        <MetaPixelLoader />
         <CartProvider>
           <AppShell>{children}</AppShell>
         </CartProvider>

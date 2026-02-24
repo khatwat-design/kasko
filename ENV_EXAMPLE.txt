@@ -15,4 +15,5 @@ GOOGLE_APPS_SCRIPT_URL=https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 
 # Facebook / Meta Pixel (اختياري)
+# يُقرأ عند التشغيل من /api/config فلا حاجة لإعادة البناء عند تغييره على السيرفر
 NEXT_PUBLIC_META_PIXEL_ID=your_meta_pixel_id
