@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useCart } from "@/components/cart-context";
 import { IconWifi, IconLightbulb, IconPhone, IconMusic, StarRating } from "@/components/landing-icons";
 import { formatCurrency } from "@/lib/products";
-import { trackAddToCart, trackViewContent } from "@/lib/meta-pixel";
+import { trackAddToCart, trackViewContent } from "@/lib/pixels";
 
 const PRODUCT_ID = "kaskoair";
 const PRODUCT_NAME = "Kaskoair";

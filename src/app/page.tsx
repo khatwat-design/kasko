@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { formatCurrency } from "@/lib/products";
 import { useCart } from "@/components/cart-context";
 import { useProducts } from "@/lib/use-products";
-import { trackAddToCart } from "@/lib/meta-pixel";
+import { trackAddToCart } from "@/lib/pixels";
 
 export default function Home() {
   const { addItem } = useCart();

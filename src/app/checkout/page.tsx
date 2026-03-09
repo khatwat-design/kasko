@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/products";
 import type { Product } from "@/lib/products";
 import { useCart } from "@/components/cart-context";
-import { trackInitiateCheckout, trackAddPaymentInfo } from "@/lib/meta-pixel";
+import { trackInitiateCheckout, trackAddPaymentInfo } from "@/lib/pixels";
 
 type CheckoutStatus = "idle" | "loading" | "success" | "error";
 

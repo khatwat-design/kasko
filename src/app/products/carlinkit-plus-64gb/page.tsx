@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useCart } from "@/components/cart-context";
 import { IconZap, IconCar, IconPlug, IconMusic, IconWallet, StarRating } from "@/components/landing-icons";
 import { formatCurrency } from "@/lib/products";
-import { trackAddToCart, trackViewContent } from "@/lib/meta-pixel";
+import { trackAddToCart, trackViewContent } from "@/lib/pixels";
 
 const PRODUCT_ID = "carlinkit-plus-64gb";
 const PRODUCT_NAME = "Carlinkit Plus 64GB";

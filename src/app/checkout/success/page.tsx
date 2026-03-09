@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { trackPurchase } from "@/lib/meta-pixel";
+import { trackPurchase } from "@/lib/pixels";
 
 function SuccessContent() {
   const searchParams = useSearchParams();

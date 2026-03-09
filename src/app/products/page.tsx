@@ -5,7 +5,7 @@ import Link from "next/link";
 import { formatCurrency } from "@/lib/products";
 import { useCart } from "@/components/cart-context";
 import { useProducts } from "@/lib/use-products";
-import { trackAddToCart } from "@/lib/meta-pixel";
+import { trackAddToCart } from "@/lib/pixels";
 
 export default function ProductsPage() {
   const { items, addItem, removeItem } = useCart();

@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { formatCurrency } from "@/lib/products";
 import { useCart } from "@/components/cart-context";
 import { useProducts } from "@/lib/use-products";
-import { trackAddToCart, trackViewContent } from "@/lib/meta-pixel";
+import { trackAddToCart, trackViewContent } from "@/lib/pixels";
 
 export default function ProductDetailPage() {
   const { items, addItem, removeItem } = useCart();
