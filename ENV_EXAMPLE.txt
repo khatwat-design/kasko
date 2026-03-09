@@ -17,5 +17,5 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 # Facebook / Meta Pixel (اختياري)
 NEXT_PUBLIC_META_PIXEL_ID=your_meta_pixel_id
 
-# TikTok Pixel (اختياري)
-NEXT_PUBLIC_TIKTOK_PIXEL_ID=your_tiktok_pixel_id
+# TikTok Pixel (اختياري) — نفس الأحداث تُطلق مع Meta
+NEXT_PUBLIC_TIKTOK_PIXEL_ID=D6BR5VBC77UAAN006710
