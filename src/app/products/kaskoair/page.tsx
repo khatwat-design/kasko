@@ -10,7 +10,7 @@ import { trackAddToCart, trackViewContent } from "@/lib/pixels";
 
 const PRODUCT_ID = "kaskoair";
 const PRODUCT_NAME = "Kaskoair";
-const PRODUCT_PRICE = 79000;
+const PRODUCT_PRICE = 55000;
 const PRODUCT_IMAGES = ["01", "02", "03", "04", "05"];
 const IMAGE_BASE = "/images/kasko%20air";
 

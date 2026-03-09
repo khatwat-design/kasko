@@ -27,7 +27,7 @@ export default function CarlinkitPlus128Landing() {
   }, []);
 
   useEffect(() => {
-    trackViewContent({ id: PRODUCT_ID, name: PRODUCT_NAME, price: 199000, category: "إلكترونيات السيارات", quantity: 1 });
+    trackViewContent({ id: PRODUCT_ID, name: PRODUCT_NAME, price: 195000, category: "إلكترونيات السيارات", quantity: 1 });
   }, []);
 
   const scrollToOrder = () => {
@@ -39,7 +39,7 @@ export default function CarlinkitPlus128Landing() {
     trackAddToCart({
       id: PRODUCT_ID,
       name: PRODUCT_NAME,
-      price: 199000,
+      price: 195000,
       category: "إلكترونيات السيارات",
       quantity: 1,
     });
@@ -51,7 +51,7 @@ export default function CarlinkitPlus128Landing() {
     trackAddToCart({
       id: PRODUCT_ID,
       name: PRODUCT_NAME,
-      price: 199000,
+      price: 195000,
       category: "إلكترونيات السيارات",
       quantity: 1,
     });
@@ -360,7 +360,7 @@ export default function CarlinkitPlus128Landing() {
             </Link>
           </div>
           <p className="mt-6 text-gray-400 text-sm">
-            السعر: {formatCurrency(199000)} — توصيل لجميع أنحاء العراق
+            السعر: {formatCurrency(195000)} — توصيل لجميع أنحاء العراق
           </p>
         </div>
       </section>

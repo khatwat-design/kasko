@@ -10,7 +10,7 @@ import { trackAddToCart, trackViewContent } from "@/lib/pixels";
 
 const PRODUCT_ID = "carlinkit-plus-64gb";
 const PRODUCT_NAME = "Carlinkit Plus 64GB";
-const PRODUCT_PRICE = 149000;
+const PRODUCT_PRICE = 155000;
 const PRODUCT_IMAGES = ["01", "02", "03", "04"];
 const IMAGE_BASE = "/images/Carlinkit%20Plus%2064GB";
 

@@ -10,7 +10,7 @@ import { trackAddToCart, trackViewContent } from "@/lib/pixels";
 
 const PRODUCT_ID = "hud-128gb";
 const PRODUCT_NAME = "HUD 128GB";
-const PRODUCT_PRICE = 229000;
+const PRODUCT_PRICE = 245000;
 const PRODUCT_IMAGES = ["01", "02", "03", "04", "05"];
 const IMAGE_BASE = "/images/Hud128%20GB";
 
