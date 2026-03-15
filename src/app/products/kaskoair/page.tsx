@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart-context";
 import { IconWifi, IconLightbulb, IconPhone, IconMusic, StarRating } from "@/components/landing-icons";
 import { formatCurrency } from "@/lib/products";
@@ -20,6 +21,7 @@ export default function KaskoairLanding() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { addItem } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setStickyVisible(window.scrollY > 120);
@@ -31,11 +33,7 @@ export default function KaskoairLanding() {
     trackViewContent({ id: PRODUCT_ID, name: PRODUCT_NAME, price: PRODUCT_PRICE, category: "إلكترونيات السيارات", quantity: 1 });
   }, []);
 
-  const scrollToOrder = () => {
-    orderRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const handleOrder = () => {
+  const handleBuyNow = () => {
     addItem(PRODUCT_ID);
     trackAddToCart({
       id: PRODUCT_ID,
@@ -44,19 +42,7 @@ export default function KaskoairLanding() {
       category: "إلكترونيات السيارات",
       quantity: 1,
     });
-    scrollToOrder();
-  };
-
-  const handleOrderAndGoToCart = () => {
-    addItem(PRODUCT_ID);
-    trackAddToCart({
-      id: PRODUCT_ID,
-      name: PRODUCT_NAME,
-      price: PRODUCT_PRICE,
-      category: "إلكترونيات السيارات",
-      quantity: 1,
-    });
-    window.location.href = "/cart";
+    router.push("/checkout");
   };
 
   const valuePoints = [
@@ -110,7 +96,7 @@ export default function KaskoairLanding() {
       >
         <span className="text-white font-bold text-lg">Kaskoair</span>
         <button
-          onClick={scrollToOrder}
+          onClick={handleBuyNow}
           className="rounded-full bg-red-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-red-500 transition-colors"
         >
           اشتري Kaskoair هسه
@@ -134,7 +120,7 @@ export default function KaskoairLanding() {
             Kaskoair يحوّل الكاربلي والأندرويد أوتو إلى اتصال لاسلكي ويضيف Android Auto للشاشات الي بيها CarPlay فقط ويخليك تعكس شاشة موبايلك بسهولة وأمان.
           </p>
           <button
-            onClick={handleOrder}
+            onClick={handleBuyNow}
             className="rounded-2xl bg-red-600 px-8 py-4 text-lg font-bold text-white hover:bg-red-500 transition-all hover:scale-105 shadow-lg shadow-red-600/30"
           >
             اشتري Kaskoair هسه
@@ -198,7 +184,7 @@ export default function KaskoairLanding() {
               </ul>
               <p className="text-slate-700 mb-8">يعني استخدام أرتب وقيادة أهدأ بدون تعقيد.</p>
               <button
-                onClick={scrollToOrder}
+                onClick={handleBuyNow}
                 className="rounded-xl bg-black text-white px-6 py-3 font-bold hover:bg-gray-800 transition-colors"
               >
                 خلّي الاتصال يصير أسهل
@@ -228,7 +214,7 @@ export default function KaskoairLanding() {
           </div>
           <div className="text-center mt-10">
             <button
-              onClick={scrollToOrder}
+              onClick={handleBuyNow}
               className="rounded-xl bg-red-600 text-white px-6 py-3 font-bold hover:bg-red-500 transition-colors"
             >
               جرّب الراحة اللاسلكية
@@ -254,7 +240,7 @@ export default function KaskoairLanding() {
             </ul>
             <div className="text-center mt-8">
               <button
-                onClick={scrollToOrder}
+                onClick={handleBuyNow}
                 className="rounded-xl bg-black text-white px-6 py-3 font-bold hover:bg-gray-800 transition-colors"
               >
                 اخذ كل الميزات هسه
@@ -284,7 +270,7 @@ export default function KaskoairLanding() {
           </div>
           <div className="text-center mt-10">
             <button
-              onClick={scrollToOrder}
+              onClick={handleBuyNow}
               className="rounded-xl bg-red-600 text-white px-6 py-3 font-bold hover:bg-red-500 transition-colors"
             >
               انضم لتجربة المستخدمين
@@ -334,7 +320,7 @@ export default function KaskoairLanding() {
           </div>
           <div className="text-center mt-8">
             <button
-              onClick={scrollToOrder}
+              onClick={handleBuyNow}
               className="rounded-xl bg-black text-white px-6 py-3 font-bold hover:bg-gray-800 transition-colors"
             >
               تواصل ويانه وخلي شاشة سيارتك اذكى
@@ -357,7 +343,7 @@ export default function KaskoairLanding() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={handleOrderAndGoToCart}
+              onClick={handleBuyNow}
               className="rounded-2xl bg-red-600 px-8 py-4 text-lg font-bold text-white hover:bg-red-500 transition-all hover:scale-105 shadow-lg"
             >
               اطلب Kaskoair هسه

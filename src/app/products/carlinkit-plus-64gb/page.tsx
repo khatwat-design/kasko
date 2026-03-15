@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart-context";
 import { IconZap, IconCar, IconPlug, IconMusic, IconWallet, StarRating } from "@/components/landing-icons";
 import { formatCurrency } from "@/lib/products";
@@ -20,6 +21,7 @@ export default function CarlinkitPlus64Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { addItem } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setStickyVisible(window.scrollY > 120);
@@ -31,11 +33,7 @@ export default function CarlinkitPlus64Landing() {
     trackViewContent({ id: PRODUCT_ID, name: PRODUCT_NAME, price: PRODUCT_PRICE, category: "إلكترونيات السيارات", quantity: 1 });
   }, []);
 
-  const scrollToOrder = () => {
-    orderRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const handleOrder = () => {
+  const handleBuyNow = () => {
     addItem(PRODUCT_ID);
     trackAddToCart({
       id: PRODUCT_ID,
@@ -44,19 +42,7 @@ export default function CarlinkitPlus64Landing() {
       category: "إلكترونيات السيارات",
       quantity: 1,
     });
-    scrollToOrder();
-  };
-
-  const handleOrderAndGoToCart = () => {
-    addItem(PRODUCT_ID);
-    trackAddToCart({
-      id: PRODUCT_ID,
-      name: PRODUCT_NAME,
-      price: PRODUCT_PRICE,
-      category: "إلكترونيات السيارات",
-      quantity: 1,
-    });
-    window.location.href = "/cart";
+    router.push("/checkout");
   };
 
   const valuePoints = [
@@ -125,7 +111,7 @@ export default function CarlinkitPlus64Landing() {
       >
         <span className="text-white font-bold text-lg">Carlinkit Plus 64GB</span>
         <button
-          onClick={scrollToOrder}
+          onClick={handleBuyNow}
           className="rounded-full bg-red-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-red-500 transition-colors"
         >
           اطلب جهاز Plus 64GB
@@ -149,7 +135,7 @@ export default function CarlinkitPlus64Landing() {
             جهاز Carlinkit Plus 64GB يخلي شاشة سيارتك تشتغل كنظام أندرويد مستقل: تطبيقات، خرائط، يوتيوب ونتفلكس كلشي مباشرة على الشاشة وبسلاسة.
           </p>
           <button
-            onClick={handleOrder}
+            onClick={handleBuyNow}
             className="rounded-2xl bg-red-600 px-8 py-4 text-lg font-bold text-white hover:bg-red-500 transition-all hover:scale-105 shadow-lg shadow-red-600/30"
           >
             اطلب جهاز Plus 64GB
@@ -222,7 +208,7 @@ export default function CarlinkitPlus64Landing() {
                 ))}
               </ul>
               <button
-                onClick={scrollToOrder}
+                onClick={handleBuyNow}
                 className="rounded-xl bg-black text-white px-6 py-3 font-bold hover:bg-gray-800 transition-colors"
               >
                 حوّل شاشتك لنظام أندرويد
@@ -363,7 +349,7 @@ export default function CarlinkitPlus64Landing() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={handleOrderAndGoToCart}
+              onClick={handleBuyNow}
               className="rounded-2xl bg-red-600 px-8 py-4 text-lg font-bold text-white hover:bg-red-500 transition-all hover:scale-105 shadow-lg"
             >
               اطلب Carlinkit Plus 64GB

@@ -3,8 +3,8 @@
  *
  * خريطة الأحداث:
  * - PageView        → layout (تحميل أي صفحة)
- * - ViewContent      → صفحة منتج [id]، صفحات الهبوط (carlinkit-plus-128gb, 64gb, hud-128gb, kaskoair)
- * - AddToCart        → الرئيسية، قائمة المنتجات، صفحة منتج، صفحات الهبوط (عند الضغط أضف للسلة)
+ * - ViewContent     → صفحة منتج [id]، صفحات الهبوط (carlinkit-plus-128gb, 64gb, hud-128gb, kaskoair)
+ * - AddToCart       → الرئيسية، قائمة المنتجات، صفحة منتج، صفحات الهبوط (عند الضغط اشتري الآن)
  * - InitiateCheckout → صفحة الدفع (عند الدخول)
  * - AddPaymentInfo  → صفحة الدفع (عند عرض نموذج الدفع)
  * - Purchase        → صفحة النجاح /checkout/success (بعد إتمام الطلب)

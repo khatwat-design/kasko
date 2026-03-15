@@ -10,6 +10,8 @@ type OrderPayload = {
     phone: string;
     city: string;
     address: string;
+    carType?: string;
+    carModel?: string;
     notes?: string;
     paymentMethod?: string;
   };
@@ -59,7 +61,9 @@ const buildTelegramMessage = (payload: OrderPayload, invoiceId: string) => {
     `👤 اسم العميل: ${payload.customer.name}`,
     `📱 رقم الهاتف: ${payload.customer.phone}`,
     `📍 المدينة: ${payload.customer.city}`,
-    `🏠 العنوان: ${payload.customer.address}`,
+    `🏠 المنطقة: ${payload.customer.address}`,
+    `🚗 نوع السيارة: ${payload.customer.carType || "—"}`,
+    `🚙 موديل السيارة: ${payload.customer.carModel || "—"}`,
     `💳 طريقة الدفع: ${payload.customer.paymentMethod || "الدفع عند الاستلام"}`,
     `📝 ملاحظات: ${payload.customer.notes || "لا توجد ملاحظات"}`,
     "",

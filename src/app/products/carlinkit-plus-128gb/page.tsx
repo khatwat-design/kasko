@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart-context";
 import { IconZap, IconDatabase, IconTarget, IconRadio, StarRating } from "@/components/landing-icons";
 import { formatCurrency } from "@/lib/products";
@@ -19,6 +20,7 @@ export default function CarlinkitPlus128Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { addItem } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setStickyVisible(window.scrollY > 120);
@@ -27,35 +29,19 @@ export default function CarlinkitPlus128Landing() {
   }, []);
 
   useEffect(() => {
-    trackViewContent({ id: PRODUCT_ID, name: PRODUCT_NAME, price: 195000, category: "إلكترونيات السيارات", quantity: 1 });
+    trackViewContent({ id: PRODUCT_ID, name: PRODUCT_NAME, price: 200000, category: "إلكترونيات السيارات", quantity: 1 });
   }, []);
 
-  const scrollToOrder = () => {
-    orderRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const handleOrder = () => {
+  const handleBuyNow = () => {
     addItem(PRODUCT_ID);
     trackAddToCart({
       id: PRODUCT_ID,
       name: PRODUCT_NAME,
-      price: 195000,
+      price: 200000,
       category: "إلكترونيات السيارات",
       quantity: 1,
     });
-    scrollToOrder();
-  };
-
-  const handleOrderAndGoToCart = () => {
-    addItem(PRODUCT_ID);
-    trackAddToCart({
-      id: PRODUCT_ID,
-      name: PRODUCT_NAME,
-      price: 195000,
-      category: "إلكترونيات السيارات",
-      quantity: 1,
-    });
-    window.location.href = "/cart";
+    router.push("/checkout");
   };
 
   const benefits = [
@@ -113,10 +99,10 @@ export default function CarlinkitPlus128Landing() {
       >
         <span className="text-white font-bold text-lg">Carlinkit Plus 128GB</span>
         <button
-          onClick={scrollToOrder}
+          onClick={handleBuyNow}
           className="rounded-full bg-red-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-red-500 transition-colors"
         >
-          اطلب Plus 128GB
+          اشتري الآن
         </button>
       </div>
 
@@ -137,10 +123,10 @@ export default function CarlinkitPlus128Landing() {
             Carlinkit Plus 128GB مخصص للي يريد أعلى أداء، تخزين أكبر، وتجربة أندرويد بدون أي تنازلات.
           </p>
           <button
-            onClick={handleOrder}
+            onClick={handleBuyNow}
             className="rounded-2xl bg-red-600 px-8 py-4 text-lg font-bold text-white hover:bg-red-500 transition-all hover:scale-105 shadow-lg shadow-red-600/30"
           >
-            اطلب Plus 128GB
+            اشتري الآن
           </button>
         </div>
       </section>
@@ -206,10 +192,10 @@ export default function CarlinkitPlus128Landing() {
                 </li>
               </ul>
               <button
-                onClick={scrollToOrder}
+                onClick={handleBuyNow}
                 className="rounded-xl bg-black text-white px-6 py-3 font-bold hover:bg-gray-800 transition-colors"
               >
-                اختار القوة الحقيقية
+                اشتري الآن
               </button>
             </div>
           </div>
@@ -345,22 +331,14 @@ export default function CarlinkitPlus128Landing() {
           <p className="text-gray-300 mb-8">
             اطلب Carlinkit Plus 128GB الآن واستمتع بأقوى تجربة أندرويد في سيارتك.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={handleOrderAndGoToCart}
-              className="rounded-2xl bg-red-600 px-8 py-4 text-lg font-bold text-white hover:bg-red-500 transition-all hover:scale-105 shadow-lg"
-            >
-              اطلب Carlinkit Plus 128GB
-            </button>
-            <Link
-              href="/cart"
-              className="rounded-2xl border-2 border-white px-8 py-4 text-lg font-bold hover:bg-white/10 transition-colors"
-            >
-              عرض السلة
-            </Link>
-          </div>
+          <button
+            onClick={handleBuyNow}
+            className="rounded-2xl bg-red-600 px-8 py-4 text-lg font-bold text-white hover:bg-red-500 transition-all hover:scale-105 shadow-lg"
+          >
+            اشتري الآن
+          </button>
           <p className="mt-6 text-gray-400 text-sm">
-            السعر: {formatCurrency(195000)} — توصيل لجميع أنحاء العراق
+            السعر: {formatCurrency(200000)} — توصيل لجميع أنحاء العراق
           </p>
         </div>
       </section>

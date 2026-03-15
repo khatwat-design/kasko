@@ -2,16 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/products";
 import { useCart } from "@/components/cart-context";
 import { useProducts } from "@/lib/use-products";
 import { trackAddToCart } from "@/lib/pixels";
 
 export default function ProductsPage() {
-  const { items, addItem, removeItem } = useCart();
+  const { addItem } = useCart();
+  const router = useRouter();
   const { products, loading } = useProducts();
   const categories = Array.from(new Set(products.map((p) => p.category)));
-  const handleAddToCart = (product: {
+  const handleBuyNow = (product: {
     id: string;
     name: string;
     price: number;
@@ -25,6 +27,7 @@ export default function ProductsPage() {
       category: product.category,
       quantity: 1,
     });
+    router.push("/checkout");
   };
 
   return (
@@ -97,33 +100,12 @@ export default function ProductsPage() {
                 عرض التفاصيل
               </Link>
             </div>
-            <div className="mt-4 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => removeItem(product.id)}
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
-                aria-label={`إزالة ${product.name}`}
-              >
-                -
-              </button>
-              <span className="min-w-6 text-center text-sm text-slate-700">
-                {items[product.id] ?? 0}
-              </span>
-              <button
-                type="button"
-                onClick={() => handleAddToCart(product)}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] text-sm font-semibold text-white transition hover:bg-[var(--color-primary-600)]"
-                aria-label={`إضافة ${product.name}`}
-              >
-                +
-              </button>
-            </div>
             <button
               type="button"
-              onClick={() => handleAddToCart(product)}
-              className="mt-4 w-full rounded-2xl border border-[var(--color-border)] px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300"
+              onClick={() => handleBuyNow(product)}
+              className="mt-4 w-full rounded-2xl bg-[var(--color-primary)] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-600)]"
             >
-              إضافة للسلة
+              اشتري الآن
             </button>
           </div>
         ))}

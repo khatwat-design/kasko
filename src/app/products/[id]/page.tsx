@@ -3,14 +3,15 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/products";
 import { useCart } from "@/components/cart-context";
 import { useProducts } from "@/lib/use-products";
 import { trackAddToCart, trackViewContent } from "@/lib/pixels";
 
 export default function ProductDetailPage() {
-  const { items, addItem, removeItem } = useCart();
+  const { addItem } = useCart();
+  const router = useRouter();
   const params = useParams<{ id: string }>();
   const { products, loading } = useProducts();
   const product = products.find((item) => item.id === params?.id);
@@ -44,11 +45,8 @@ export default function ProductDetailPage() {
     );
   }
 
-  const quantity = product ? items[product.id] ?? 0 : 0;
-  const handleAddToCart = () => {
-    if (!product) {
-      return;
-    }
+  const handleBuyNow = () => {
+    if (!product) return;
     addItem(product.id);
     trackAddToCart({
       id: product.id,
@@ -57,6 +55,7 @@ export default function ProductDetailPage() {
       category: product.category,
       quantity: 1,
     });
+    router.push("/checkout");
   };
 
   return (
@@ -94,43 +93,14 @@ export default function ProductDetailPage() {
                 {product ? formatCurrency(product.price) : "--"}
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => product && removeItem(product.id)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] text-lg font-semibold text-slate-600"
-                aria-label="إنقاص الكمية"
-                disabled={!product}
-              >
-                -
-              </button>
-              <span className="min-w-10 text-center text-sm font-semibold text-slate-900">
-                {quantity}
-              </span>
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)] text-lg font-semibold text-white"
-                aria-label="زيادة الكمية"
-                disabled={!product}
-              >
-                +
-              </button>
-            </div>
             <button
               type="button"
-              onClick={handleAddToCart}
-              className="w-full rounded-2xl border border-[var(--color-border)] px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300"
+              onClick={handleBuyNow}
+              className="w-full rounded-2xl bg-[var(--color-primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-600)] disabled:opacity-50"
               disabled={!product}
             >
-              إضافة للسلة
+              اشتري الآن
             </button>
-            <Link
-              href="/cart"
-              className="inline-flex w-full items-center justify-center rounded-2xl bg-[var(--color-primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-600)]"
-            >
-              الذهاب إلى السلة
-            </Link>
           </div>
         </div>
       </section>

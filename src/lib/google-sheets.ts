@@ -24,6 +24,8 @@ export async function addOrderToGoogleSheets(orderData: any) {
           phone: orderData.customer.phone,
           city: orderData.customer.city,
           address: orderData.customer.address,
+          carType: orderData.customer.carType || '',
+          carModel: orderData.customer.carModel || '',
           paymentMethod: orderData.customer.paymentMethod || 'الدفع عند الاستلام',
           itemsCount: orderData.summary.totalItems,
           subtotal: orderData.summary.subtotal,

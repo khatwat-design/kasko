@@ -133,6 +133,8 @@ export default function CheckoutPage() {
         phone: phone,
         city: String(form.get("city") || ""),
         address: String(form.get("address") || ""),
+        carType: String(form.get("carType") || ""),
+        carModel: String(form.get("carModel") || ""),
         notes: String(form.get("notes") || ""),
         paymentMethod: "cod", // الدفع عند الاستلام فقط
       },
@@ -284,12 +286,30 @@ export default function CheckoutPage() {
             </div>
           </div>
           <div className="space-y-2 md:col-span-2">
-            <label className="text-xs text-[var(--color-muted)]">العنوان *</label>
+            <label className="text-xs text-[var(--color-muted)]">المنطقة *</label>
             <input
               name="address"
               required
               className="w-full rounded-2xl border border-[var(--color-border)] px-4 py-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-indigo-100"
-              placeholder="الحي، الشارع، رقم المبنى"
+              placeholder="الحي، الشارع، أو اسم المنطقة"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs text-[var(--color-muted)]">نوع السيارة</label>
+            <input
+              name="carType"
+              type="text"
+              className="w-full rounded-2xl border border-[var(--color-border)] px-4 py-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-indigo-100"
+              placeholder="مثال: تويوتا، هيونداي"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs text-[var(--color-muted)]">موديل السيارة</label>
+            <input
+              name="carModel"
+              type="text"
+              className="w-full rounded-2xl border border-[var(--color-border)] px-4 py-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-indigo-100"
+              placeholder="مثال: كامري 2020، سنتافي 2022"
             />
           </div>
           <div className="space-y-2 md:col-span-2">
