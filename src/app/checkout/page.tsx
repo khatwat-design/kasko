@@ -59,7 +59,7 @@ export default function CheckoutPage() {
   );
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.subtotal, 0);
-  const deliveryFee = subtotal > 0 ? 5000 : 0;
+  const deliveryFee = 0;
   const total = subtotal + deliveryFee;
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const firedCheckoutEvent = useRef(false);
