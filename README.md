@@ -1,6 +1,6 @@
-# متجر كاسكو
+# الأطرقجي للسجاد والأثاث والمفروشات — متجر إلكتروني
 
-نسخة متجر إلكتروني مخصصة لعميل كاسكو — بدون لوحة إدارة. تشغيل المتجر فقط مع ربط تلجرام، Google Sheets، وبكسل فيسبوك.
+نسخة مبنية على قالب [Kasko](https://github.com/khatwat-design/kasko) لمتجر **الأطرقجي للسجاد والأثاث والمفروشات**. لا توجد لوحة إدارة؛ الإدارة عبر `data/products.json` وربط تلجرام وGoogle Sheets والبكسلات.
 
 ## التشغيل
 
@@ -16,14 +16,14 @@ npm run dev
 1. انسخ `ENV_EXAMPLE.txt` إلى `.env.local`.
 2. عدّل المتغيرات:
    - **TELEGRAM_BOT_TOKEN** و **TELEGRAM_CHANNEL_ID**: لإرسال الطلبات إلى قناة/مجموعة تلجرام.
-   - **GOOGLE_APPS_SCRIPT_URL**: رابط Web App من Google Apps Script لحفظ الطلبات في Google Sheet.
+   - **GOOGLE_APPS_SCRIPT_URL**: رابط Web App من Google Apps Script لحفظ الطلبات في Google Sheet (انظر `scripts/google-apps-script-kasco.gs`).
    - **NEXT_PUBLIC_GA_ID**: (اختياري) معرف Google Analytics.
    - **NEXT_PUBLIC_META_PIXEL_ID**: (اختياري) معرف بكسل فيسبوك/ميتا.
 
 ## الشعار والمنتجات
 
-- **الشعار**: ضع شعار كاسكو في `public/images/logo.png`.
-- **المنتجات**: عدّل `data/products.json` — أضف أو عدّل المنتجات (id, name, description, price, badge, category, image). ضع صور المنتجات في `public/products/` أو استخدم مسارات خارجية في حقل `image`.
+- **الشعار**: ضع شعار المتجر في `public/images/logo.png` (يُستخدم في الهيدر والفوتر).
+- **المنتجات**: عدّل `data/products.json` — أضف أو عدّل المنتجات (id, name, description, price, badge, category, image). ضع الصور في `public/products/` أو استخدم مسارات نسبية من `public/`.
 
 ## البناء والنشر
 
@@ -34,5 +34,5 @@ npm start
 
 ## ملاحظات
 
-- لا توجد لوحة إدارة في هذا المشروع؛ إدارة المحتوى تتم عبر تعديل `data/products.json` وملفات المشروع.
+- إدارة المحتوى عبر تعديل `data/products.json` وملفات المشروع.
 - الطلبات تُرسل إلى تلجرام وتُسجّل في Google Sheets حسب الإعدادات أعلاه.

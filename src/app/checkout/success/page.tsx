@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { trackPurchase } from "@/lib/pixels";
+import { isStandaloneStore } from "@/lib/store-mode";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -14,7 +15,7 @@ function SuccessContent() {
     if (firedPurchaseEvent.current || typeof window === "undefined") {
       return;
     }
-    const raw = window.localStorage.getItem("kasco-last-order");
+    const raw = window.localStorage.getItem("alatraqji-last-order");
     if (!raw) {
       return;
     }
@@ -35,7 +36,7 @@ function SuccessContent() {
           orderId: invoice ?? undefined,
         });
         firedPurchaseEvent.current = true;
-        window.localStorage.removeItem("kasco-last-order");
+        window.localStorage.removeItem("alatraqji-last-order");
       }
     } catch {
       // ignore malformed payload
@@ -64,10 +65,30 @@ function SuccessContent() {
           سنقوم بالتواصل معك قريباً لتأكيد التفاصيل والتوصيل.
         </p>
         {invoice ? (
-          <p className="text-xs text-[var(--color-muted)]">
-            رقم الطلب:{" "}
-            <span className="font-semibold text-slate-900">{invoice}</span>
-          </p>
+          <div className="space-y-3">
+            <p className="text-xs text-[var(--color-muted)]">
+              رقم الطلب:{" "}
+              <span className="font-semibold text-slate-900">{invoice}</span>
+            </p>
+            {!isStandaloneStore() ? (
+              <>
+                <Link
+                  href={`/account/orders/${encodeURIComponent(invoice)}`}
+                  className="inline-flex rounded-full border border-[var(--color-border)] px-5 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-slate-300"
+                >
+                  تتبع هذا الطلب
+                </Link>
+                <p className="text-xs text-[var(--color-muted)]">
+                  يُفعَّل حسابك تلقائياً عند الطلب؛ سجّل الدخول لاحقاً بنفس رقم الهاتف كاسم
+                  مستخدم وكلمة مرور.
+                </p>
+              </>
+            ) : (
+              <p className="text-xs text-[var(--color-muted)]">
+                احتفظ برقم الطلب؛ سنتواصل معك لتأكيد التفاصيل.
+              </p>
+            )}
+          </div>
         ) : null}
       </div>
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">

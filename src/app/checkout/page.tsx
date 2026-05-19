@@ -6,9 +6,20 @@ import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/products";
 import type { Product } from "@/lib/products";
 import { useCart } from "@/components/cart-context";
+import { useStoreCustomer } from "@/contexts/store-customer-context";
+import { isStandaloneStore } from "@/lib/store-mode";
 import { trackInitiateCheckout, trackAddPaymentInfo } from "@/lib/pixels";
 
 type CheckoutStatus = "idle" | "loading" | "success" | "error";
+
+function flattenCheckoutErrors(errors?: Record<string, string[] | string>): string {
+  if (!errors) return "";
+  return Object.values(errors)
+    .flatMap((v) => (Array.isArray(v) ? v : [String(v)]))
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join(" ");
+}
 
 // دالة للتحقق من رقم الهاتف العراقي
 const validateIraqiPhone = (phone: string): boolean => {
@@ -33,6 +44,7 @@ const formatPhoneNumber = (phone: string): string => {
 
 export default function CheckoutPage() {
   const { items, clear } = useCart();
+  const { setSessionFromToken } = useStoreCustomer();
   const router = useRouter();
   const [status, setStatus] = useState<CheckoutStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -102,7 +114,7 @@ export default function CheckoutPage() {
       e.target.value = formatted;
       
       if (!validateIraqiPhone(formatted)) {
-        setPhoneError("رقم الهاتف يجب أن starts with 07 ويحتوي على 11 رقم");
+        setPhoneError("رقم الهاتف يجب أن يبدأ بـ 07 ويحتوي على 11 رقماً");
       }
     }
   };
@@ -151,7 +163,7 @@ export default function CheckoutPage() {
         total,
         totalItems,
       },
-      channel: "kasco-web",
+      channel: "alatraqji-web",
     };
 
     try {
@@ -161,24 +173,38 @@ export default function CheckoutPage() {
         body: JSON.stringify(orderPayload),
       });
 
-      let result: { message?: string; invoiceId?: string } | null = null;
+      let result: {
+        message?: string;
+        invoiceId?: string;
+        storeToken?: string;
+        errors?: Record<string, string[] | string>;
+      } | null = null;
       try {
-        result = (await response.json()) as { message?: string; invoiceId?: string };
+        result = (await response.json()) as {
+          message?: string;
+          invoiceId?: string;
+          storeToken?: string;
+          errors?: Record<string, string[] | string>;
+        };
       } catch {
         result = null;
       }
 
       if (!response.ok) {
         setStatus("error");
-        setStatusMessage(result?.message || "تعذر إرسال الطلب.");
+        const flat = flattenCheckoutErrors(result?.errors);
+        setStatusMessage(flat || result?.message || "تعذر إرسال الطلب.");
         return;
       }
 
       setStatus("success");
       setStatusMessage(result?.message || "تم استلام طلبك بنجاح.");
+      if (result?.storeToken && !isStandaloneStore()) {
+        await setSessionFromToken(result.storeToken);
+      }
       if (typeof window !== "undefined") {
         window.localStorage.setItem(
-          "kasco-last-order",
+          "alatraqji-last-order",
           JSON.stringify({
             total,
             items: cartItems.map((item) => ({
@@ -295,21 +321,25 @@ export default function CheckoutPage() {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-xs text-[var(--color-muted)]">نوع السيارة</label>
+            <label className="text-xs text-[var(--color-muted)]">
+              الطابق أو مدخل المنزل (اختياري)
+            </label>
             <input
               name="carType"
               type="text"
               className="w-full rounded-2xl border border-[var(--color-border)] px-4 py-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-indigo-100"
-              placeholder="مثال: تويوتا، هيونداي"
+              placeholder="مثال: طابق ثالث، باب جانبي"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-xs text-[var(--color-muted)]">موديل السيارة</label>
+            <label className="text-xs text-[var(--color-muted)]">
+              وقت التوصيل المفضل (اختياري)
+            </label>
             <input
               name="carModel"
               type="text"
               className="w-full rounded-2xl border border-[var(--color-border)] px-4 py-3 text-sm outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-indigo-100"
-              placeholder="مثال: كامري 2020، سنتافي 2022"
+              placeholder="مثال: صباحاً، بعد الظهر، نهاية الأسبوع"
             />
           </div>
           <div className="space-y-2 md:col-span-2">
@@ -325,8 +355,12 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-dashed border-[var(--color-border)] p-4 text-xs text-[var(--color-muted)]">
-          سيتم تأكيد الطلب عبر رسالة بعد الإرسال مباشرة.
+        <div className="mt-6 rounded-2xl border border-dashed border-[var(--color-border)] p-4 text-xs text-[var(--color-muted)] space-y-2">
+          <p>
+            بعد إتمام الطلب يُنشأ لك حساب تلقائياً لتتبع الطلبات: يُحدَّث اسمك من الطلب، وكلمة
+            المرور هي نفس رقم هاتفك بعد التنسيق (07…).
+          </p>
+          <p>سيتم تأكيد الطلب عبر رسالة بعد الإرسال مباشرة.</p>
         </div>
 
         <button

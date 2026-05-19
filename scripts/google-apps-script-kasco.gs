@@ -1,5 +1,6 @@
 /**
- * كاسكو — Google Apps Script لحفظ الطلبات في Google Sheet
+ * @deprecated استخدم الملف: scripts/google-apps-script-alatraqji.gs (نسخة محدّثة)
+ * الأطرقجي للسجاد والأثاث والمفروشات — Google Apps Script لحفظ الطلبات في Google Sheet
  * التعليمات:
  * 1. أنشئ Google Sheet جديد (أو استخدم موجود).
  * 2. من القائمة: تمديدات (Extensions) > Apps Script
@@ -47,7 +48,7 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  return createResponse(200, { message: 'Kasco Orders Web App is running. Use POST with action: addOrder' });
+  return createResponse(200, { message: 'Al-Atraqji Orders Web App is running. Use POST with action: addOrder' });
 }
 
 function getOrdersSheet() {
@@ -68,8 +69,8 @@ function getOrdersSheet() {
       'الهاتف',
       'المدينة',
       'المنطقة',
-      'نوع السيارة',
-      'موديل السيارة',
+      'الطابق أو مدخل المنزل',
+      'وقت التوصيل المفضل',
       'طريقة الدفع',
       'عدد القطع',
       'المجموع الفرعي',

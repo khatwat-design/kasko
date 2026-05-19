@@ -1,6 +1,6 @@
 "use client";
 
-const iconClass = "w-10 h-10 text-red-600";
+const iconClass = "w-10 h-10 text-[var(--color-primary)]";
 
 export function IconZap({ className }: { className?: string }) {
   return (
@@ -109,7 +109,7 @@ export function IconLightbulb({ className }: { className?: string }) {
 
 export function IconCheck({ className }: { className?: string }) {
   return (
-    <svg className={className ?? "w-5 h-5 text-red-600 shrink-0"} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg className={className ?? "w-5 h-5 text-[var(--color-primary)] shrink-0"} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
     </svg>
   );

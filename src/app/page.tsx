@@ -1,24 +1,22 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { formatCurrency } from "@/lib/products";
-import { useCart } from "@/components/cart-context";
 import { useProducts } from "@/lib/use-products";
+import { useCart } from "@/components/cart-context";
 import { trackAddToCart } from "@/lib/pixels";
+import type { Product } from "@/lib/products";
+import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
+import SloganHero from "@/components/slogan-hero";
+import HomeBanners from "@/components/home-banners";
 
 export default function Home() {
   const { addItem } = useCart();
   const router = useRouter();
-  const { products, loading } = useProducts();
+  const { products, categories, loading, error, refresh } = useProducts();
 
-  const handleBuyNow = (product: {
-    id: string;
-    name: string;
-    price: number;
-    category?: string;
-  }) => {
+  const handleBuyNow = (product: Product) => {
     addItem(product.id);
     trackAddToCart({
       id: product.id,
@@ -30,75 +28,98 @@ export default function Home() {
     router.push("/checkout");
   };
 
-  const featuredProducts = products.slice(0, 6);
+  const handleAddToCart = (product: Product) => {
+    addItem(product.id);
+    trackAddToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      category: product.category,
+      quantity: 1,
+    });
+  };
+
+  const featured = products.slice(0, 8);
 
   return (
-    <div className="space-y-6 md:space-y-12 px-3 md:px-6">
-      <section className="space-y-4 md:space-y-6">
-        <div className="text-center">
-          <h1 className="text-xl md:text-3xl font-bold text-black mb-2 md:mb-4">
-            منتجاتنا
-          </h1>
-          <p className="text-xs md:text-base text-gray-600">
-            أفضل المنتجات لتناسب احتياجاتك
-          </p>
+    <div className="space-y-10 md:space-y-14">
+      <SloganHero />
+      <HomeBanners />
+
+      {error ? (
+        <div className="rounded-2xl border border-red-100 bg-red-50 p-4 text-center text-sm text-red-800">
+          {error}{" "}
+          <button type="button" onClick={() => refresh()} className="font-semibold underline">
+            إعادة المحاولة
+          </button>
         </div>
-        
-        <div className="grid gap-3 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="flex flex-col justify-between rounded-xl md:rounded-3xl border border-gray-200 bg-white p-3 md:p-6 shadow-md md:shadow-lg transition hover:-translate-y-1 hover:shadow-xl"
-            >
-              <div className="space-y-2 md:space-y-3">
-                {product.badge && (
-                  <span className="inline-flex rounded-full bg-red-600 px-2 py-1 text-xs text-white">
-                    {product.badge}
-                  </span>
-                )}
-                <div className="relative aspect-square w-full overflow-hidden rounded-lg md:rounded-2xl bg-gray-100 cursor-pointer group">
-                  <Link href={`/products/${product.id}`}>
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover transition-transform group-hover:scale-105"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link href={`/products/${product.id}`} className="block">
-                    <h3 className="text-sm md:text-lg font-semibold text-black hover:text-red-600 transition-colors cursor-pointer">
-                      {product.name}
-                    </h3>
-                  </Link>
-                  <p className="text-xs md:text-sm leading-4 md:leading-6 text-gray-600">
-                    {product.description}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-3 md:mt-6 flex flex-col items-center justify-between gap-2 md:gap-3">
-                <p className="text-sm md:text-base font-semibold text-black">
-                  {formatCurrency(product.price)}
-                </p>
-                <div className="flex items-center gap-2 w-full">
-                  <button
-                    type="button"
-                    onClick={() => handleBuyNow(product)}
-                    className="flex-1 rounded-full bg-red-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-red-700"
-                  >
-                    اشتري الآن
-                  </button>
-                  <Link
-                    href={`/products/${product.id}`}
-                    className="flex-1 rounded-full border border-gray-200 px-3 py-2 text-xs font-semibold text-black transition hover:border-gray-300 hover:bg-gray-50"
-                  >
-                    التفاصيل
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
+      ) : null}
+
+      <section className="space-y-5">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-stone-900 md:text-2xl">تسوق حسب القسم</h2>
+            <p className="text-sm text-[var(--color-muted)]">اختر التصنيف المناسب لبيتك</p>
+          </div>
+          <Link href="/products" className="text-sm font-semibold text-[var(--color-primary)] hover:underline">
+            عرض كل المنتجات ←
+          </Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-28 animate-pulse rounded-2xl bg-stone-100" />
+              ))
+            : categories.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={`/products?category=${encodeURIComponent(cat.id)}`}
+                  className="group flex items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 shadow-sm transition hover:border-[var(--color-primary)] hover:shadow-md"
+                >
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-stone-100">
+                    {cat.image ? (
+                      <Image
+                        src={cat.image}
+                        alt={cat.name}
+                        fill
+                        className="object-cover transition group-hover:scale-105"
+                        sizes="64px"
+                      />
+                    ) : null}
+                  </div>
+                  <div className="min-w-0 text-right">
+                    <p className="font-semibold text-stone-900 group-hover:text-[var(--color-primary)]">{cat.name}</p>
+                    {cat.description ? (
+                      <p className="mt-0.5 line-clamp-2 text-xs text-[var(--color-muted)]">{cat.description}</p>
+                    ) : null}
+                  </div>
+                </Link>
+              ))}
+        </div>
+      </section>
+
+      <section className="space-y-5">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-stone-900 md:text-2xl">مختارات مميزة</h2>
+            <p className="text-sm text-[var(--color-muted)]">أفضل المبيعات والوافدين الجدد</p>
+          </div>
+          <Link href="/products" className="text-sm font-semibold text-[var(--color-primary)] hover:underline">
+            الكتالوج الكامل ←
+          </Link>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {loading
+            ? Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} variant="hero" />)
+            : featured.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  variant="hero"
+                  onBuyNow={handleBuyNow}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
         </div>
       </section>
     </div>

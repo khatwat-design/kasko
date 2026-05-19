@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getProductByIdFromJson } from "@/lib/products-data";
+import { fetchProductFromApi } from "@/lib/store-api";
 
 export const runtime = "nodejs";
 
@@ -8,7 +9,8 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
-  const product = getProductByIdFromJson(id);
+  const product =
+    (await fetchProductFromApi(id)) ?? getProductByIdFromJson(id);
   if (!product) {
     return NextResponse.json({ message: "غير موجود." }, { status: 404 });
   }
